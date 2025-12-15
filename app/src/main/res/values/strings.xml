@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AquaTracker</string>
+    <string name="hot_water_screen_title">Hot water</string>
+    <string name="cold_water_screen_title">Cold water</string>
+</resources>
