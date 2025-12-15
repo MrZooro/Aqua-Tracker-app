@@ -26,6 +26,8 @@ import com.example.aquatracker.ui.theme.AquaTrackerTheme
 import com.example.aquatracker.view.NavigationRoute
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.example.aquatracker.view.ColdWaterScreen
+import com.example.aquatracker.view.HotWaterScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -89,16 +91,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    @Composable
-    fun ColdWaterScreen(x0: PaddingValues) {
-        Text(text = "ColdWaterScreen")
-    }
-
-    @Composable
-    fun HotWaterScreen(x0: PaddingValues) {
-        Text(text = "HotWaterScreen")
     }
 
     @Composable
