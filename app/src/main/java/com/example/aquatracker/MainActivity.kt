@@ -6,28 +6,27 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.aquatracker.ui.theme.AquaTrackerTheme
-import com.example.aquatracker.view.NavigationRoute
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import com.example.aquatracker.view.ColdWaterScreen
 import com.example.aquatracker.view.HotWaterScreen
+import com.example.aquatracker.view.NavigationRoute
 
 class MainActivity : ComponentActivity() {
 
@@ -45,10 +44,10 @@ class MainActivity : ComponentActivity() {
                     mutableIntStateOf(startDestination.ordinal)
                 }
 
-                Scaffold(modifier = Modifier.fillMaxSize()) { contentPadding ->
+                Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
                     PrimaryTabRow(
-                        selectedTabIndex = selectedDestination,
-                        modifier = Modifier.padding(contentPadding)
+                        modifier = Modifier.statusBarsPadding(),
+                        selectedTabIndex = selectedDestination
                     ) {
                         NavigationRoute.entries.forEachIndexed { index, destination ->
                             Tab(
@@ -67,6 +66,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     }
+                }) { contentPadding ->
                     NavGraph(paddingValues = contentPadding)
                 }
             }
@@ -90,22 +90,6 @@ class MainActivity : ComponentActivity() {
                     ColdWaterScreen(paddingValues)
                 }
             }
-        }
-    }
-
-    @Composable
-    fun Greeting(name: String, modifier: Modifier = Modifier) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-        AquaTrackerTheme {
-            Greeting("Android")
         }
     }
 }
