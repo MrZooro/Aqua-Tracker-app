@@ -1,4 +1,4 @@
-package com.example.aquatracker.repository.dataClasses
+package com.example.aquatracker.repository.dataClass
 
 import java.time.LocalDate
 

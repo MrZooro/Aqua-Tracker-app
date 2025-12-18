@@ -2,6 +2,6 @@ package com.example.aquatracker.viewModel.uiState
 
 import com.example.aquatracker.viewModel.dataClass.AquaItem
 
-data class ColdWaterUiState(
-    val coldAquaList: List<AquaItem> = emptyList()
+data class HotWaterUiState(
+    val hotAquaList: List<AquaItem> = emptyList()
 )

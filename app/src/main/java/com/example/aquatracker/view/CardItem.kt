@@ -1,20 +1,15 @@
 package com.example.aquatracker.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -31,14 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
-import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.aquatracker.R
-import com.example.aquatracker.viewModel.dataClasses.AquaItem
+import com.example.aquatracker.util.NumberFormatter
+import com.example.aquatracker.viewModel.dataClass.AquaItem
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalWearMaterialApi::class)
@@ -63,7 +57,6 @@ fun CardItem(
         0f to SwipeCardState.CLOSED,
         -actionWidthPx to SwipeCardState.OPEN
     )
-
 
     Box(
         modifier = modifier
@@ -103,7 +96,11 @@ fun CardItem(
                     modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(R.string.aqua_value_label) + data.value
                 )
-                Text(text = stringResource(R.string.aqua_change_lable) + data.delta)
+                Text(
+                    text = stringResource(R.string.aqua_change_lable) + NumberFormatter.formatDelta(
+                        data.delta
+                    )
+                )
             }
         }
     }

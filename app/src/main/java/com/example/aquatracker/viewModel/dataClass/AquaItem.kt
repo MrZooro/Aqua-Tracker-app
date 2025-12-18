@@ -1,6 +1,6 @@
-package com.example.aquatracker.viewModel.dataClasses
+package com.example.aquatracker.viewModel.dataClass
 
-import com.example.aquatracker.repository.dataClasses.RepoAquaItem
+import com.example.aquatracker.repository.dataClass.RepoAquaItem
 import java.time.format.DateTimeFormatter
 
 /**

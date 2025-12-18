@@ -2,26 +2,26 @@ package com.example.aquatracker.viewModel
 
 import androidx.lifecycle.ViewModel
 import com.example.aquatracker.repository.Repository
-import com.example.aquatracker.viewModel.dataClass.AquaItem
 import com.example.aquatracker.util.DateFormatter
-import com.example.aquatracker.viewModel.uiState.ColdWaterUiState
+import com.example.aquatracker.viewModel.dataClass.AquaItem
+import com.example.aquatracker.viewModel.uiState.HotWaterUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ColdWaterViewModel : ViewModel() {
+class HotWaterViewModel : ViewModel() {
 
-    private val mutableUiState = MutableStateFlow(ColdWaterUiState())
+    private val mutableUiState = MutableStateFlow(HotWaterUiState())
     val uiState = mutableUiState.asStateFlow()
 
     private val repository = Repository.getRepository()
 
     init {
-        val newColdAquaList: MutableList<AquaItem> = mutableListOf()
+        val newHotAquaList: MutableList<AquaItem> = mutableListOf()
         var prevValue: Double? = null
 
-        repository.getColdRepoAquaItems().forEach { repoAquaItem ->
-            newColdAquaList.add(
+        repository.getHotRepoAquaItems().forEach { repoAquaItem ->
+            newHotAquaList.add(
                 AquaItem.fromRepoAquaItem(
                     repoAquaItem,
                     DateFormatter.fullDate,
@@ -32,7 +32,7 @@ class ColdWaterViewModel : ViewModel() {
         }
 
         mutableUiState.update { currentState ->
-            currentState.copy(coldAquaList = newColdAquaList.toList())
+            currentState.copy(hotAquaList = newHotAquaList.toList())
         }
     }
 }
