@@ -38,7 +38,6 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun CardItem(
-    modifier: Modifier = Modifier,
     actionWidth: Dp = 96.dp,
     data: AquaItem,
     onDelete: () -> Unit,
@@ -59,7 +58,7 @@ fun CardItem(
     )
 
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = 16.dp, start = 8.dp, end = 8.dp)

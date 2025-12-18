@@ -7,15 +7,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,36 +43,38 @@ class MainActivity : ComponentActivity() {
 
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
-                val tabs = listOf(
-                    NavigationRoute.HotWaterRoute,
-                    NavigationRoute.ColdWaterRoute
-                )
-                val selectedDestination = tabs.indexOfFirst { it.route == currentRoute }
-                    .coerceAtLeast(0)
+                var showDialog by remember { mutableStateOf(false) }
 
-                Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-                    PrimaryTabRow(
-                        modifier = Modifier.statusBarsPadding(),
-                        selectedTabIndex = selectedDestination
-                    ) {
-                        NavigationRoute.entries.forEachIndexed { index, destination ->
-                            Tab(
-                                selected = selectedDestination == index,
-                                onClick = {
-                                    navController.navigate(route = destination.route)
-                                },
-                                text = {
-                                    Text(
-                                        text = getString(destination.label),
-                                        maxLines = 2,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                            )
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        MainTabRow(
+                            currentRoute ?: NavigationRoute.HotWaterRoute.route,
+                            navController
+                        )
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = { showDialog = true },
+                        ) {
+                            Icon(Icons.Filled.Add, "Floating action button.")
                         }
                     }
-                }) { contentPadding ->
+                ) { contentPadding ->
                     NavGraph(navController, paddingValues = contentPadding)
+
+                    if (showDialog) {
+                        EditAquaDialog(
+                            onDismiss = {
+                                showDialog = false
+                            },
+                            onConfirm = {
+                                showDialog = false
+                            },
+                            onCancel = {
+                                showDialog = false
+                            })
+                    }
                 }
             }
         }
@@ -89,6 +99,38 @@ class MainActivity : ComponentActivity() {
 
             composable(NavigationRoute.ColdWaterRoute.route) {
                 ColdWaterScreen(paddingValues)
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun MainTabRow(currentRoute: String, navController: NavController) {
+        val tabs = listOf(
+            NavigationRoute.HotWaterRoute,
+            NavigationRoute.ColdWaterRoute
+        )
+        val selectedDestination = tabs.indexOfFirst { it.route == currentRoute }
+            .coerceAtLeast(0)
+
+        PrimaryTabRow(
+            modifier = Modifier.statusBarsPadding(),
+            selectedTabIndex = selectedDestination
+        ) {
+            tabs.forEachIndexed { index, destination ->
+                Tab(
+                    selected = selectedDestination == index,
+                    onClick = {
+                        navController.navigate(route = destination.route)
+                    },
+                    text = {
+                        Text(
+                            text = getString(destination.label),
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                )
             }
         }
     }
