@@ -1,4 +1,4 @@
-package com.example.aquatracker
+package com.example.aquatracker.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,23 +14,16 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.aquatracker.ui.theme.AquaTrackerTheme
-import com.example.aquatracker.view.ColdWaterScreen
-import com.example.aquatracker.view.HotWaterScreen
-import com.example.aquatracker.view.NavigationRoute
 
 class MainActivity : ComponentActivity() {
-
-    private var navController: NavHostController? = null
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,11 +31,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AquaTrackerTheme {
-                navController = rememberNavController()
-                val startDestination = NavigationRoute.HotWaterRoute
-                var selectedDestination by rememberSaveable {
-                    mutableIntStateOf(startDestination.ordinal)
-                }
+                val navController = rememberNavController()
+
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val tabs = listOf(
+                    NavigationRoute.HotWaterRoute,
+                    NavigationRoute.ColdWaterRoute
+                )
+                val selectedDestination = tabs.indexOfFirst { it.route == currentRoute }
+                    .coerceAtLeast(0)
 
                 Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
                     PrimaryTabRow(
@@ -53,8 +51,7 @@ class MainActivity : ComponentActivity() {
                             Tab(
                                 selected = selectedDestination == index,
                                 onClick = {
-                                    navController?.navigate(route = destination.route)
-                                    selectedDestination = index
+                                    navController.navigate(route = destination.route)
                                 },
                                 text = {
                                     Text(
@@ -67,28 +64,31 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }) { contentPadding ->
-                    NavGraph(paddingValues = contentPadding)
+                    NavGraph(navController, paddingValues = contentPadding)
                 }
             }
         }
     }
 
+    /**
+     * В зависимости от NavigationRoute открывает соответствующий экран
+     *
+     * @param [navController] navController
+     * @param [paddingValues] Отступы, для экранов
+     */
     @Composable
-    private fun NavGraph(paddingValues: PaddingValues) {
-        navController?.let { tempNavController ->
+    private fun NavGraph(navController: NavHostController, paddingValues: PaddingValues) {
+        NavHost(
+            navController = navController,
+            startDestination = NavigationRoute.HotWaterRoute.route
+        ) {
 
-            NavHost(
-                navController = tempNavController,
-                startDestination = NavigationRoute.HotWaterRoute.route
-            ) {
+            composable(NavigationRoute.HotWaterRoute.route) {
+                HotWaterScreen(paddingValues)
+            }
 
-                composable(NavigationRoute.HotWaterRoute.route) {
-                    HotWaterScreen(paddingValues)
-                }
-
-                composable(NavigationRoute.ColdWaterRoute.route) {
-                    ColdWaterScreen(paddingValues)
-                }
+            composable(NavigationRoute.ColdWaterRoute.route) {
+                ColdWaterScreen(paddingValues)
             }
         }
     }

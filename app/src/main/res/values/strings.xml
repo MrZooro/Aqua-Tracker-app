@@ -2,4 +2,6 @@
     <string name="app_name">AquaTracker</string>
     <string name="hot_water_screen_title">Hot water</string>
     <string name="cold_water_screen_title">Cold water</string>
+    <string name="aqua_value_label">Показания: </string>
+    <string name="aqua_change_lable">"Изменение: "</string>
 </resources>
