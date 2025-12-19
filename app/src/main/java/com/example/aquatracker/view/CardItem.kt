@@ -40,7 +40,7 @@ import kotlin.math.roundToInt
 fun CardItem(
     actionWidth: Dp = 96.dp,
     data: AquaItem,
-    onDelete: () -> Unit,
+    onDelete: (aquaItemId: Long) -> Unit,
     onEdit: () -> Unit
 ) {
 
@@ -72,7 +72,11 @@ fun CardItem(
             IconButton(onClick = onEdit, modifier = Modifier.size(48.dp)) {
                 Icon(Icons.Default.Edit, contentDescription = null)
             }
-            IconButton(onClick = onDelete, modifier = Modifier.size(48.dp)) {
+            IconButton(
+                onClick = {
+                    onDelete(data.id)
+                }, modifier = Modifier.size(48.dp)
+            ) {
                 Icon(Icons.Default.Delete, contentDescription = null)
             }
         }
@@ -90,7 +94,7 @@ fun CardItem(
                 .wrapContentHeight()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = data.date, fontWeight = FontWeight.Bold)
+                Text(text = data.dateStr, fontWeight = FontWeight.Bold)
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
                     text = stringResource(R.string.aqua_value_label) + data.value

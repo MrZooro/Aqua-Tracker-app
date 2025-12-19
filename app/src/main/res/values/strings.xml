@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">AquaTracker</string>
-    <string name="hot_water_screen_title">Горячая вода</string>
-    <string name="cold_water_screen_title">Холодная вода</string>
-    <string name="aqua_value_label">"Показания: "</string>
-    <string name="aqua_change_lable">"Изменение: "</string>
+    <string name="hot_water_screen_title">Hot water</string>
+    <string name="cold_water_screen_title">Cold water</string>
+    <string name="aqua_value_label">"Value: "</string>
+    <string name="aqua_change_lable">"Changing: "</string>
+    <string name="add_value_title">Adding the value</string>
+    <string name="edit_value_title">Editing the value</string>
+    <string name="value_text_field_label">Value</string>
+    <string name="date_text_field_hint">Date of value</string>
+    <string name="save_btn_title">Save</string>
+    <string name="confirm_dialog_btn">OK</string>
+    <string name="cancel_dialog_btn">Cancel</string>
 </resources>

@@ -2,7 +2,9 @@ package com.example.aquatracker.view
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -18,12 +20,17 @@ fun ColdWaterScreen(paddingValues: PaddingValues) {
 
     val uiState by coldWaterViewModel.uiState.collectAsStateWithLifecycle()
 
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+    LazyColumn(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(paddingValues), reverseLayout = true) {
 
         items(uiState.coldAquaList) { aquaItem ->
             CardItem(
                 data = aquaItem,
-                onDelete = {},
+                onDelete = {aquaItemId ->
+                    coldWaterViewModel.deleteAquaItem(aquaItemId)
+                },
                 onEdit = {})
         }
     }

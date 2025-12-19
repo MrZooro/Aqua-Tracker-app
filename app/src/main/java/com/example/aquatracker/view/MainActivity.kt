@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.aquatracker.ui.theme.AquaTrackerTheme
+import com.example.aquatracker.viewModel.MainActivityViewModel
 
 class MainActivity : ComponentActivity() {
 
@@ -43,7 +45,8 @@ class MainActivity : ComponentActivity() {
 
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
-                var showDialog by remember { mutableStateOf(false) }
+                var showEditDialog by remember { mutableStateOf(false) }
+                val mainActivityViewModel: MainActivityViewModel = viewModel()
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -55,7 +58,7 @@ class MainActivity : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { showDialog = true },
+                            onClick = { showEditDialog = true },
                         ) {
                             Icon(Icons.Filled.Add, "Floating action button.")
                         }
@@ -63,17 +66,31 @@ class MainActivity : ComponentActivity() {
                 ) { contentPadding ->
                     NavGraph(navController, paddingValues = contentPadding)
 
-                    if (showDialog) {
+                    if (showEditDialog) {
                         EditAquaDialog(
                             onDismiss = {
-                                showDialog = false
+                                showEditDialog = false
                             },
-                            onConfirm = {
-                                showDialog = false
+                            onConfirm = { value, date ->
+                                if (currentRoute == NavigationRoute.HotWaterRoute.route) {
+                                    mainActivityViewModel.insertAquaItem(
+                                        itemValue = value,
+                                        itemDate = date,
+                                        itemIsHot = true
+                                    )
+                                } else {
+                                    mainActivityViewModel.insertAquaItem(
+                                        itemValue = value,
+                                        itemDate = date,
+                                        itemIsHot = false
+                                    )
+                                }
+                                showEditDialog = false
                             },
                             onCancel = {
-                                showDialog = false
-                            })
+                                showEditDialog = false
+                            }
+                        )
                     }
                 }
             }

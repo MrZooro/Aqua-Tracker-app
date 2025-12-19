@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hot_water_screen_title">Горячая вода</string>
+    <string name="cold_water_screen_title">Холодная вода</string>
+    <string name="aqua_value_label">"Показания: "</string>
+    <string name="aqua_change_lable">"Изменение: "</string>
+    <string name="add_value_title">Добавление показания</string>
+    <string name="edit_value_title">Редактирование показания</string>
+    <string name="value_text_field_label">Показание</string>
+    <string name="date_text_field_hint">Дата снятия показания</string>
+    <string name="save_btn_title">Сохранить</string>
+    <string name="cancel_dialog_btn">Отмена</string>
+</resources>
